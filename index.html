@@ -25,7 +25,7 @@
             </ul>
         </marquee>
     </header>
-    <main class="is-flex">
+    <main class="is-flex mt-4">
         <section id="stock-search" class="ml-3">
             <form id="stock-search-form">
                 <input type="text" id="stock-symbol-input" class="mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
@@ -34,12 +34,70 @@
             <hr>
             <div id="search-history"></div>
         </section>
-        <section id="financial-news" class="is-flex-direction-column">
-            
+        <section id="financial-news" class="is-flex-direction-column ml-6">
+            <div class="stock-card mb-6">
+                <h3>IBM</h3>
+                <h4>186.04</h4>
+                <h6 class="price-change negative">-3.27</h6>
+                <h6 class="price-change negative">-1.7273%</h6>
+                <p>Open: 187.42</p>
+                <p>High: 187.915</p>
+                <p>Low: 185.52</p>
+                <p>Previous Close: 189.31</p>
+                <p>Volume: 3,080,507</p>
+                <br>
+                <p>As Of: 2004-04-10</p>
+            </div>
+            <ul>
+                <li class="mb-5">
+                    <article>
+                        <h3>Three Excellent ETFs for your IRA</h3>
+                        <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
+                    </article>
+                </li>
+                <li class="mb-5">
+                    <article>
+                        <h3>Three Excellent ETFs for your IRA</h3>
+                        <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
+                    </article>
+                </li>
+                <li class="mb-5">
+                    <article>
+                        <h3>Three Excellent ETFs for your IRA</h3>
+                        <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
+                    </article>
+                </li>
+            </ul>
         </section>
-        <section id="market-values" class="is-flex-direction-column"></section>
+        <section id="market-values" class="is-flex-direction-column ml-6">
+            <ul>
+                <li class="mb-2">
+                    <div class="is-flex">
+                        <h5 class="mr-2">Dow Jones</h5>
+                        <h6 class="mr-2">38,461.51</h6>
+                        <h6 class="price-change negative">-422.16</h6>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="is-flex">
+                        <h5 class="mr-2">NASDAQ</h5>
+                        <h6 class="mr-2">16,170.36</h6>
+                        <h6 class="price-change negative">-136.28</h6>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="is-flex">
+                        <h5 class="mr-2">S&P 500</h5>
+                        <h6 class="mr-2">5,160.64</h6>
+                        <h6 class="price-change negative">-49.27</h6>
+                    </div>
+                </li>
+            </ul>
+        </section>
     </main>
-    <footer></footer>
+    <footer>
+        
+    </footer>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
