@@ -1,0 +1,21 @@
+.price-change{
+    color: green;
+}
+
+.negative{
+    color: red;
+}
+
+#stock-ticker{
+    background-color: white;
+    color: black;
+}
+
+#stock-symbol-input, #form-submit{
+    width: 100%;
+}
+
+.stock-card{
+    width: 80%;
+    margin: 0 auto;
+}
