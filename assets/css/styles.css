@@ -1,0 +1,18 @@
+.price-change{
+    text-align: right;
+    color:green;
+}
+
+.negative{
+    color:red;
+}
+
+#stock-ticker{
+    background-color:white;
+    color:black;
+}
+
+#stock-symbol-input, #form-submit{
+    width:100%;
+
+}

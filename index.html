@@ -10,15 +10,40 @@
 </head>
 <body>
     <header>
-        <marquee id="stock-ticker">Text moves right to left</marquee>
+        <marquee id="stock-ticker" bg-color="White">
+            <ul class="is-flex mt-4">
+                <li class="stock is-flex mr-6">
+                    <h5 class="mr-2">GOOG</h5>
+                    <p class="mr-2">157.66</p>
+                    <p class="price-change negative">-0.48</p>
+                </li>
+                <li class="stock is-flex mr-6">
+                    <h5 class="mr-2">AMZN</h5>
+                    <p class="mr-2">185.95</p>
+                    <p class="price-change">+0.28</p>
+                </li>
+            </ul>
+        </marquee>
     </header>
-    <main>
-        <section id="stock-search"></section>
-        <section id="financial-news"></section>
-        <section id="market-values"></section>
+    <main class="is-flex">
+        <section id="stock-search" class="ml-3">
+            <form id="stock-search-form">
+                <input type="text" id="stock-symbol-input" class="mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
+                <input type="submit" id="form-submit" value="Search">
+            </form>
+            <hr>
+            <div id="search-history"></div>
+        </section>
+        <section id="financial-news" class="is-flex-direction-column">
+            
+        </section>
+        <section id="market-values" class="is-flex-direction-column"></section>
     </main>
     <footer></footer>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
+
+
