@@ -1,5 +1,6 @@
 const ALPHAVANTAGE_API_KEY = "WKJPLDP0ARARLE1V";
 const POLYGON_API_KEY = "2zuDZ7z67L4BdulP6Rf0fEVoU9qfAkAM";
+
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "GOOG", "META", "NFLX"];
 
 const stockTickerEl = $("#stock-ticker");
