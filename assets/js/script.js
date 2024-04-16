@@ -1,16 +1,38 @@
-const ALPHAVANTAGE_API_KEY = "WKJPLDP0ARARLE1V";
-const POLYGON_API_KEY = "2zuDZ7z67L4BdulP6Rf0fEVoU9qfAkAM";
+const FINNHUB_API_KEY = "coc8hu9r01qj8q79pm00coc8hu9r01qj8q79pm0g";
+const FMP_API_KEY = "ta4F40KXBNiO37e4v1FN7Wj9NDUsY807";
 
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "GOOG", "META", "NFLX"];
 
 const stockTickerEl = $("#stock-ticker");
 stockTickerEl.on("animationstart", displayStockTicker);
 
+const stockSearchFormEl = $("#stock-search-form");
+stockSearchFormEl.on("submit", handleForm);
+
+const newsEl = $("#financial-news");
+
+async function handleForm(event) {
+    event.preventDefault();
+
+    const searchInput = $("#stock-symbol-input").val().trim().toUpperCase();
+    if (searchInput !== "") {
+        let data = await getStockInfo(searchInput);
+
+        const cardEl = createStockCard(searchInput, data);
+
+        newsEl.prepend(cardEl);
+
+        stockSearchFormEl.trigger("reset");
+    }
+}
+
 async function displayStockTicker() {
     let stockData = [];
 
     for (const stock of STOCK_TICKER_SYMBOLS) {
-        stockData.push(await getStockInfo(stock));
+        let data = await getStockInfo(stock);
+        data.symbol = stock;
+        stockData.push(data);
     }
 
     const ul = $("<ul></ul>");
@@ -22,18 +44,23 @@ async function displayStockTicker() {
 
         const h5 = $("<h5></h5>");
         h5.prop("class", "mr-2");
-        h5.text(stock["Global Quote"]["01. symbol"]);
+        h5.text(stock.symbol);
 
         const price = $("<p></p>");
         price.prop("class", "mr-2");
-        price.text(stock["Global Quote"]["05. price"]);
+        price.text(stock.c);
 
         const change = $("<p></p>");
         change.prop("class", "price-change");
-        change.text(stock["Global Quote"]["09. change"]);
 
-        if (stock["Global Quote"]["09. change"][0] === "-") {
+        const priceChange = (Math.round(stock.d * 100) / 100).toFixed(2);
+        if (priceChange < 0) {
             change.prop("class", "negative");
+            change.text(priceChange);
+        } else if (priceChange > 0) {
+            change.text("+" + priceChange);
+        } else {
+            change.text(priceChange);
         }
 
         li.append(h5);
@@ -41,35 +68,15 @@ async function displayStockTicker() {
         li.append(change);
 
         ul.append(li);
+        stockTickerEl.append(ul);
     }
 }
 
 function getStockInfo(stockSymbol) {
-    return fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${ALPHAVANTAGE_API_KEY}`)
+    return fetch(`https://finnhub.io/api/v1/quote?symbol=${stockSymbol}&token=${FINNHUB_API_KEY}`)
         .then(response => response.json())
         .catch(error => console.error(error));
 }
-
-// Modal functionality
-const modal = $("#my-modal");
-const span = $(".close");
-
-// Show the modal when the page loads
-$(document).ready(function() {
-    modal.css("display", "block");
-});
-
-// Close the modal when the user clicks on the close button
-span.click(function() {
-    modal.css("display", "none");
-});
-
-// Close the modal when the user clicks outside of it
-$(window).click(function(event) {
-    if (event.target === modal[0]) {
-        modal.css("display", "none");
-    }
-});
 
 $(document).ready(function() {
   if (JSON.parse(localStorage.getItem("display-modal")) !== false){
@@ -82,4 +89,3 @@ $(document).ready(function() {
   }
   
 });
-
