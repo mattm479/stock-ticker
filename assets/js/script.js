@@ -49,3 +49,37 @@ function getStockInfo(stockSymbol) {
         .then(response => response.json())
         .catch(error => console.error(error));
 }
+
+// Modal functionality
+const modal = $("#my-modal");
+const span = $(".close");
+
+// Show the modal when the page loads
+$(document).ready(function() {
+    modal.css("display", "block");
+});
+
+// Close the modal when the user clicks on the close button
+span.click(function() {
+    modal.css("display", "none");
+});
+
+// Close the modal when the user clicks outside of it
+$(window).click(function(event) {
+    if (event.target === modal[0]) {
+        modal.css("display", "none");
+    }
+});
+
+$(document).ready(function() {
+  if (JSON.parse(localStorage.getItem("display-modal")) !== false){
+    const modalEl = $("#my-modal");
+    modalEl.addClass("is-active");
+    modalEl.on("click", function(event){
+      modalEl.removeClass("is-active");
+    });
+    localStorage.setItem("display-modal", JSON.stringify(false)); 
+  }
+  
+});
+
