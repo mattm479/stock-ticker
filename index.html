@@ -3,64 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
+    <title>TickerTrax</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/themes/base/theme.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
-    <script src="./assets/js/script.js"></script>
 </head>
 <body>
     <header>
         <div id="stock-ticker" class="marquee"></div>
     </header>
-    <main class="is-flex mt-5">
-        <section id="stock-search" class="ml-3 is-flex-direction-column">
-            <form id="stock-search-form">
-                <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
-                <button type="submit" id="form-submit" class="button is-link">Search</button>
-            </form>
-            <hr>
-            <div id="search-history"></div>
-        </section>
-        <section id="financial-news" class="is-flex-direction-column ml-6"></section>
-        <section id="market-values" class="is-flex-direction-column ml-3">
-            <div class="card">
-                <div class="card-content">
-                    <ul class="is-flex">
-                        <li class="mr-5">
-                            <div class="is-flex">
-                                <div class="is-justify-content-center">
-                                    <h5 class="mr-2"><strong>Dow Jones</strong></h5>
-                                    <h6 class="mr-2">38,461.51</h6>
-                                    <h6 class="price-change negative">-422.16</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="mr-5">
-                            <div class="is-flex">
-                                <div class="is-justify-content-center">
-                                    <h5 class="mr-2"><strong>NASDAQ</strong></h5>
-                                    <h6 class="mr-2">16,170.36</h6>
-                                    <h6 class="price-change negative">-136.28</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="is-flex">
-                                <div class="is-justify-content-center">
-                                    <h5 class="mr-2"><strong>S&P 500</strong></h5>
-                                    <h6 class="mr-2">5,160.64</h6>
-                                    <h6 class="price-change negative">-49.27</h6>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+    <main class="fixed-grid has-6-cols mt-5">
+        <div class="grid">
+            <section id="stock-search" class="cell ml-2">
+                <form id="stock-search-form">
+                    <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
+                    <button type="submit" id="form-submit" class="button is-link">Search</button>
+                </form>
+                <hr>
+                <div id="search-history"></div>
+            </section>
+            <section id="financial-news" class="cell is-col-span-4"></section>
+            <section id="crypto-commodity-values" class="cell is-col-start-6">
+                <div id="crypto-values" class="card mr-2"></div>
+                <div id="commodity-values" class="card mr-2"></div>
+            </section>
+        </div>
     </main>
     <footer class="is-flex is-justify-content-center">
         <p>Made with <span class="heart">&hearts;</span></p>

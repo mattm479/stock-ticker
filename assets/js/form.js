@@ -1,18 +1,29 @@
 const stockSearchFormEl = $("#stock-search-form");
-stockSearchFormEl.on("submit", handleForm);
-
+const searchInputEl = $("#stock-symbol-input");
 const newsEl = $("#financial-news");
+
+stockSearchFormEl.on("submit", handleForm);
 
 async function handleForm(event) {
     event.preventDefault();
 
-    const searchInput = $("#stock-symbol-input").val().trim().toUpperCase();
+    const searchInput = searchInputEl.val().trim().toUpperCase();
     if (searchInput !== "") {
+        const previousSearches = JSON.parse(localStorage.getItem("previous-searches")) ?? [];
+
+        if (previousSearches.indexOf(searchInput) === -1) {
+            previousSearches.push(searchInput);
+
+            localStorage.setItem("previous-searches", JSON.stringify(previousSearches));
+        }
+
+        displayPreviousSearchButtons();
+
         let data = await getStockInfo(searchInput);
 
         const cardEl = createStockCard(searchInput, data);
 
-        $("#news-feed").remove();
+        $("#financial-news").empty();
 
         newsEl.prepend(cardEl);
 
@@ -160,4 +171,31 @@ function createStockCardFooter() {
     footerDiv.append(footerTitleDiv);
 
     return footerDiv;
+}
+
+function displayPreviousSearchButtons() {
+    const searchHistory = $("#search-history");
+    searchHistory.empty();
+    const previousSearches = JSON.parse(localStorage.getItem("previous-searches")).sort();
+    for (let symbol of previousSearches) {
+        const button = $("<button></button>");
+
+        button.prop("class", "button is-link mb-3");
+        button.text(symbol.toUpperCase());
+        button.on("click", handlePreviousSymbolSearch);
+
+        searchHistory.append(button);
+    }
+}
+
+/**
+ * Sets the input to be the stock symbol of the button clicked and triggers the form submit to populate
+ * the stock data for that symbol.
+ * @param event
+ */
+function handlePreviousSymbolSearch(event) {
+    event.preventDefault();
+
+    searchInputEl.val(event.target.textContent);
+    stockSearchFormEl.trigger("submit");
 }

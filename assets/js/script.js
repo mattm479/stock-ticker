@@ -1,4 +1,31 @@
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
+const CRYPTO_SYMBOLS = ["BTC", "BCH", "BSV", "LTC", "PYPL", "SOL"];
+const COMMODITIES_SYMBOLS = [
+    {
+        symbol: "GASDESW",
+        name: "Diesel Gas"
+    },
+    {
+        symbol: "GASREGCOVW",
+        name: "Gas"
+    },
+    {
+        symbol: "DJFUELUSGULF",
+        name: "Jet Fuel"
+    },
+    {
+        symbol: "DHHNGSP",
+        name: "Natural Gas"
+    },
+    {
+        symbol: "DCOILWTICO",
+        name: "Oil"
+    },
+    {
+        symbol: "DPROPANEMBTX",
+        name: "Propane"
+    }
+];
 const stockTickerEl = $("#stock-ticker");
 
 async function displayStockTicker() {
@@ -92,77 +119,124 @@ async function displayStockNews(stockSymbol = null) {
     financialNews.append(newsFeed);
 }
 
-async function displayMarketIndexValues() {
-    const marketData = await getMarketIndexInfo();
-    const marketValues = $("#market-values");
-    const card = $("<div></div>");
-    card.prop("class", "card");
+async function displayCryptoInfo() {
+    const cardDiv = $("#crypto-values");
 
-    const cardContent = $("<div></div>");
-    cardContent.prop("class", "card-content");
+    const headerDiv = $("<div></div>");
+    headerDiv.prop("class", "card-header");
 
-    const ul = $("<ul></ul>");
-    ul.prop("class", "is-flex");
+    const headerTitleDiv = $("<div></div>");
+    headerTitleDiv.prop("class", "card-header-title is-centered");
 
-    for (const data of marketData) {
-        const li = $("<li></li>");
-        li.prop("class", "mr-5");
+    const h3 = $("<h3></h3>");
+    h3.prop("class", "bold");
+    h3.text("Crypto Prices");
 
-        const outerDiv = $("<div></div>");
-        outerDiv.prop("class", "is-flex");
+    headerTitleDiv.append(h3);
+    headerDiv.append(headerTitleDiv);
+    cardDiv.append(headerDiv);
 
-        const innerDiv = $("<div></div>");
-        innerDiv.prop("class", "is-justify-content-center");
+    const contentDiv = $("<div></div>");
+    contentDiv.prop("class", "card-content columns is-multiline");
+
+    for (const symbol of CRYPTO_SYMBOLS) {
+        const data = await getStockInfo(symbol);
+        const div = $("<div></div>");
+        div.prop("class", "column");
 
         const h5 = $("<h5></h5>");
-        h5.prop("class", "mr-2");
-        h5.text(data.name);
+        h5.prop("class", "bold");
+        h5.text(symbol);
 
         const price = $("<h6></h6>");
-        price.prop("class", "mr-2");
-        price.text(data.price);
+        price.text((Math.round(data.c * 100) / 100).toFixed(3));
 
-        const priceChange = $("<h6></h6>");
-        priceChange.prop("class", "price-change");
-        priceChange.text(data.change);
+        const change = $("<h6></h6>");
+        change.prop("class", "price-change");
 
-        innerDiv.append(h5);
-        innerDiv.append(price);
-        innerDiv.append(priceChange);
-        outerDiv.append(innerDiv);
-        li.append(outerDiv);
-        ul.append(li);
+        const priceChange = (Math.round(data.d * 100) / 100).toFixed(2);
+        if (priceChange < 0) {
+            change.prop("class", "negative");
+            change.text(priceChange);
+        } else if (priceChange > 0) {
+            change.text("+" + priceChange);
+        } else {
+            change.text(priceChange);
+        }
+
+        div.append(h5);
+        div.append(price);
+        div.append(change);
+
+        contentDiv.append(div);
     }
 
-    cardContent.append(ul);
-    card.append(cardContent);
-    marketValues.append(card);
+    cardDiv.append(contentDiv);
+}
+
+async function displayCommoditiesInfo() {
+    const commoditiesData = await getCommoditiesInfo(COMMODITIES_SYMBOLS);
+    const cardDiv = $("#commodity-values");
+
+    const headerDiv = $("<div></div>");
+    headerDiv.prop("class", "card-header");
+
+    const headerTitleDiv = $("<div></div>");
+    headerTitleDiv.prop("class", "card-header-title is-centered");
+
+    const h3 = $("<h3></h3>");
+    h3.prop("class", "bold");
+    h3.text("Commodity Prices");
+
+    headerTitleDiv.append(h3);
+    headerDiv.append(headerTitleDiv);
+    cardDiv.append(headerDiv);
+
+    const contentDiv = $("<div></div>");
+    contentDiv.prop("class", "card-content columns is-multiline");
+
+    for (const commodity of commoditiesData) {
+        const div = $("<div></div>");
+        div.prop("class", "column");
+
+        const object = COMMODITIES_SYMBOLS.filter(obj => obj.symbol === commodity.key);
+        const h5 = $("<h5></h5>");
+        h5.prop("class", "bold");
+        h5.text(object[0].name);
+
+        const h6 = $("<h6></h6>");
+        h6.text((Math.round(commodity.value * 100) / 100).toFixed(3));
+
+        div.append(h5);
+        div.append(h6);
+
+        contentDiv.append(div);
+    }
+
+    cardDiv.append(contentDiv);
 }
 
 stockTickerEl.on("transitionend animationend", async function () {
     await displayStockTicker();
 })
 
-function getStockInfo(stockSymbol) {
-    return fetch(`https://finnhub.io/api/v1/quote?symbol=${stockSymbol}&token=${FINNHUB_API_KEY}`)
-        .then(response => response.json())
-        .catch(error => console.error(error));
-}
-
-$(document).ready(function() {
-  if (JSON.parse(localStorage.getItem("display-modal")) !== false){
+$(document).ready(async function() {
+  if (JSON.parse(localStorage.getItem("display-modal")) !== false) {
     const modalEl = $("#my-modal");
     modalEl.addClass("is-active");
     modalEl.on("click", function(event){
       modalEl.removeClass("is-active");
     });
+
     localStorage.setItem("display-modal", JSON.stringify(false)); 
   }
   
   const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
 
+  displayPreviousSearchButtons();
+
   await displayStockTicker();
   await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
-  //await displayMarketIndexValues();
-  //await getCommoditiesInfo();  
+  await displayCryptoInfo();
+  await displayCommoditiesInfo();
 });
