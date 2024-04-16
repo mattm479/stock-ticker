@@ -39,6 +39,10 @@ footer p:nth-child(2){
     transform:translateX(-50%);
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .heart{
     color: red;
 }
