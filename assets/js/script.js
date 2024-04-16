@@ -143,11 +143,26 @@ stockTickerEl.on("transitionend animationend", async function () {
     await displayStockTicker();
 })
 
-$(document).ready(async function () {
-    const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
+function getStockInfo(stockSymbol) {
+    return fetch(`https://finnhub.io/api/v1/quote?symbol=${stockSymbol}&token=${FINNHUB_API_KEY}`)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}
 
-    await displayStockTicker();
-    await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
-    //await displayMarketIndexValues();
-    //await getCommoditiesInfo();
+$(document).ready(function() {
+  if (JSON.parse(localStorage.getItem("display-modal")) !== false){
+    const modalEl = $("#my-modal");
+    modalEl.addClass("is-active");
+    modalEl.on("click", function(event){
+      modalEl.removeClass("is-active");
+    });
+    localStorage.setItem("display-modal", JSON.stringify(false)); 
+  }
+  
+  const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
+
+  await displayStockTicker();
+  await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
+  //await displayMarketIndexValues();
+  //await getCommoditiesInfo();  
 });
