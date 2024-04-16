@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/themes/base/theme.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </head>
 <body>
     <header>
@@ -56,7 +59,7 @@
                 </li>
             </ul>
         </section>
-        <section id="market-values" class="is-flex-direction-column ml-6">
+        <section id="market-values" class="is-flex-direction-column ml-3">
             <div class="card">
                 <div class="card-content">
                     <ul class="is-flex">
@@ -95,12 +98,19 @@
     <footer class="is-flex is-justify-content-center">
         <p>TickerTrax</p>
         <p>Made with <span class="heart">&hearts;</span></p>
-
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="./assets/js/script.js"></script>
+    
+    <div id="my-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Welcome to TickerTrax</h2>
+            <p>TickerTrax provides stock prices, changes, financial news and market information; no frills approach to financial data</p>
+        </div>
+    </div>
 </body>
 </html>
 
