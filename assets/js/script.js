@@ -1,30 +1,5 @@
-const FINNHUB_API_KEY = "coc8hu9r01qj8q79pm00coc8hu9r01qj8q79pm0g";
-const FMP_API_KEY = "ta4F40KXBNiO37e4v1FN7Wj9NDUsY807";
-
-const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "GOOG", "META", "NFLX"];
-
+const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
 const stockTickerEl = $("#stock-ticker");
-stockTickerEl.on("animationstart", displayStockTicker);
-
-const stockSearchFormEl = $("#stock-search-form");
-stockSearchFormEl.on("submit", handleForm);
-
-const newsEl = $("#financial-news");
-
-async function handleForm(event) {
-    event.preventDefault();
-
-    const searchInput = $("#stock-symbol-input").val().trim().toUpperCase();
-    if (searchInput !== "") {
-        let data = await getStockInfo(searchInput);
-
-        const cardEl = createStockCard(searchInput, data);
-
-        newsEl.prepend(cardEl);
-
-        stockSearchFormEl.trigger("reset");
-    }
-}
 
 async function displayStockTicker() {
     let stockData = [];
@@ -72,148 +47,107 @@ async function displayStockTicker() {
     }
 }
 
-function getStockInfo(stockSymbol) {
-    return fetch(`https://finnhub.io/api/v1/quote?symbol=${stockSymbol}&token=${FINNHUB_API_KEY}`)
-        .then(response => response.json())
-        .catch(error => console.error(error));
-}
+async function displayStockNews(stockSymbol = null) {
+    const stockNews = await getStockNews(stockSymbol);
+    const financialNews = $("#financial-news");
+    const newsFeed = $("<ul></ul>");
+    newsFeed.prop("id", "news-feed");
 
-function createStockCard(stockSymbol, stockData) {
-    const cardDiv = $("<div></div>");
-    cardDiv.prop("class", "card stock-card mb-6");
+    for (const news of stockNews) {
+        const li = $("<li></li>");
+        li.prop("class", "mb-6");
 
-    const cardHeader = createStockCardHeader(stockSymbol, stockData);
-    const cardContent = createStockCardContent(stockData);
-    const cardFooter = createStockCardFooter(stockData);
+        const article = $("<article></article>");
+        article.prop("class", "message is-success");
 
-    cardDiv.append(cardHeader);
-    cardDiv.append(cardContent);
-    cardDiv.append(cardFooter);
+        const messageHeader = $("<div></div>");
+        messageHeader.prop("class", "message-header");
 
-    return cardDiv;
-}
+        const h3 = $("<h3></h3>");
+        h3.text(news.headline);
 
-function createStockCardHeader(stockSymbol, stockData) {
-    const cardHeaderDiv = $("<div></div>");
-    cardHeaderDiv.prop("class", "card-header");
+        messageHeader.append(h3);
 
-    const cardHeaderTitleDiv = $("<div></div>");
-    cardHeaderTitleDiv.prop("class", "card-header-title is-centered");
+        const messageBody = $("<div></div>");
+        messageBody.prop("class", "message-body");
 
-    const h3 = $("<h3></h3>");
-    h3.prop("class", "mr-3 bold");
-    h3.text(stockSymbol);
+        const p = $("<p></p>");
+        p.text(news.summary + "...");
 
-    const h4 = $("<h4></h4>");
-    h4.prop("class", "mr-3 bold");
-    h4.text(stockData.c);
+        const link = $("<a></a>");
+        link.prop("href", news.url);
+        link.prop("target", "_blank");
+        link.text("[Read More]");
 
-    const priceChange = $("<h6></h6>");
-    priceChange.prop("class", "mr-3 price-change bold");
+        p.append(link);
+        messageBody.append(p);
 
-    const percentChange = $("<h6></h6>");
-    percentChange.prop("class", "price-change bold");
+        article.append(messageHeader);
+        article.append(messageBody);
 
-    if (stockData.d > 0) {
-        priceChange.text("+" + stockData.d);
-        percentChange.text("+" + stockData.dp + "%");
-    } else if (stockData.d < 0) {
-        priceChange.prop("class", "negative");
-        priceChange.text(stockData.d);
-
-        percentChange.prop("class", "negative");
-        percentChange.text(stockData.dp + "%");
-    } else {
-        priceChange.text(stockData.d);
-        percentChange.text(stockData.dp + "%");
+        li.append(article);
+        newsFeed.append(li);
     }
 
-    cardHeaderTitleDiv.append(h3);
-    cardHeaderTitleDiv.append(h4);
-    cardHeaderTitleDiv.append(priceChange);
-    cardHeaderTitleDiv.append(percentChange);
-    cardHeaderDiv.append(cardHeaderTitleDiv);
-
-    return cardHeaderDiv;
+    financialNews.append(newsFeed);
 }
 
-function createStockCardContent(stockData) {
-    const cardContentDiv = $("<div></div>");
-    cardContentDiv.prop("class", "card-content is-flex is-justify-content-center is-align-items-center");
+async function displayMarketIndexValues() {
+    const marketData = await getMarketIndexInfo();
+    const marketValues = $("#market-values");
+    const card = $("<div></div>");
+    card.prop("class", "card");
 
-    const openDiv = $("<div></div>");
-    openDiv.prop("class", "is-flex-direction-column mr-5");
+    const cardContent = $("<div></div>");
+    cardContent.prop("class", "card-content");
 
-    const openP1 = $("<p></p>");
-    openP1.prop("class", "bold");
-    openP1.text("Open: ");
+    const ul = $("<ul></ul>");
+    ul.prop("class", "is-flex");
 
-    const openValueP1 = $("<p></p>");
-    openValueP1.text(stockData.o);
+    for (const data of marketData) {
+        const li = $("<li></li>");
+        li.prop("class", "mr-5");
 
-    openDiv.append(openP1);
-    openDiv.append(openValueP1);
+        const outerDiv = $("<div></div>");
+        outerDiv.prop("class", "is-flex");
 
-    const highDiv = $("<div></div>");
-    highDiv.prop("class", "is-flex-direction-column mr-5");
+        const innerDiv = $("<div></div>");
+        innerDiv.prop("class", "is-justify-content-center");
 
-    const highP1 = $("<p></p>");
-    highP1.prop("class", "bold");
-    highP1.text("High: ");
+        const h5 = $("<h5></h5>");
+        h5.prop("class", "mr-2");
+        h5.text(data.name);
 
-    const highValueP1 = $("<p></p>");
-    highValueP1.text(stockData.h);
+        const price = $("<h6></h6>");
+        price.prop("class", "mr-2");
+        price.text(data.price);
 
-    highDiv.append(highP1);
-    highDiv.append(highValueP1);
+        const priceChange = $("<h6></h6>");
+        priceChange.prop("class", "price-change");
+        priceChange.text(data.change);
 
-    const lowDiv = $("<div></div>");
-    lowDiv.prop("class", "is-flex-direction-column mr-5");
+        innerDiv.append(h5);
+        innerDiv.append(price);
+        innerDiv.append(priceChange);
+        outerDiv.append(innerDiv);
+        li.append(outerDiv);
+        ul.append(li);
+    }
 
-    const lowP1 = $("<p></p>");
-    lowP1.prop("class", "bold");
-    lowP1.text("Low: ");
-
-    const lowValueP1 = $("<p></p>");
-    lowValueP1.text(stockData.l);
-
-    lowDiv.append(lowP1);
-    lowDiv.append(lowValueP1);
-
-    const previousCloseDiv = $("<div></div>");
-    previousCloseDiv.prop("class", "is-flex-direction-column mr-5");
-
-    const previousCloseP1 = $("<p></p>");
-    previousCloseP1.prop("class", "bold");
-    previousCloseP1.text("Previous Close: ");
-
-    const previousCloseValueP1 = $("<p></p>");
-    previousCloseValueP1.text(stockData.pc);
-
-    previousCloseDiv.append(previousCloseP1);
-    previousCloseDiv.append(previousCloseValueP1);
-
-    cardContentDiv.append(openDiv);
-    cardContentDiv.append(highDiv);
-    cardContentDiv.append(lowDiv);
-    cardContentDiv.append(previousCloseDiv);
-
-    return cardContentDiv;
+    cardContent.append(ul);
+    card.append(cardContent);
+    marketValues.append(card);
 }
 
-function createStockCardFooter() {
-    const footerDiv = $("<div></div>");
-    footerDiv.prop("class", "card-footer");
+stockTickerEl.on("transitionend animationend", async function () {
+    await displayStockTicker();
+})
 
-    const footerTitleDiv = $("<div></div>");
-    footerTitleDiv.prop("class", "card-footer-item");
+$(document).ready(async function () {
+    const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
 
-    const p = $("<p></p>");
-    p.prop("class", "bold");
-    p.text("As of: " + dayjs().format("YYYY-MM-DD"));
-
-    footerTitleDiv.append(p);
-    footerDiv.append(footerTitleDiv);
-
-    return footerDiv;
-}
+    await displayStockTicker();
+    await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
+    //await displayMarketIndexValues();
+    //await getCommoditiesInfo();
+});

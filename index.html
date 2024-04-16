@@ -14,7 +14,7 @@
         <div id="stock-ticker" class="marquee"></div>
     </header>
     <main class="is-flex mt-5">
-        <section id="stock-search" class="ml-3">
+        <section id="stock-search" class="ml-3 is-flex-direction-column">
             <form id="stock-search-form">
                 <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
                 <button type="submit" id="form-submit" class="button is-link">Search</button>
@@ -22,40 +22,7 @@
             <hr>
             <div id="search-history"></div>
         </section>
-        <section id="financial-news" class="is-flex-direction-column ml-6">
-            <ul id="news-feed">
-                <li class="mb-6">
-                    <article class="message is-link">
-                        <div class="message-header">
-                            <h3>Three Excellent ETFs for your IRA</h3>
-                        </div>
-                        <div class="message-body">
-                            <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
-                        </div>
-                    </article>
-                </li>
-                <li class="mb-6">
-                    <article class="message is-light">
-                        <div class="message-header">
-                            <h3>Three Excellent ETFs for your IRA</h3>
-                        </div>
-                        <div class="message-body">
-                            <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
-                        </div>
-                    </article>
-                </li>
-                <li class="mb-6">
-                    <article class="message is-success">
-                        <div class="message-header">
-                            <h3>Three Excellent ETFs for your IRA</h3>
-                        </div>
-                        <div class="message-body">
-                            <p>We Highlight Three Low Cost High Quality ETFs Suitable For Retirement Investing...<a href="#">[Read More]</a></p>
-                        </div>
-                    </article>
-                </li>
-            </ul>
-        </section>
+        <section id="financial-news" class="is-flex-direction-column ml-6"></section>
         <section id="market-values" class="is-flex-direction-column ml-6">
             <div class="card">
                 <div class="card-content">
@@ -93,13 +60,13 @@
         </section>
     </main>
     <footer class="is-flex is-justify-content-center">
-        <p>TickerTrax</p>
         <p>Made with <span class="heart">&hearts;</span></p>
-
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="./assets/js/api-calls.js"></script>
+    <script src="./assets/js/form.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
