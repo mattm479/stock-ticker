@@ -18,9 +18,8 @@
             <section id="stock-search" class="cell ml-2">
                 <form id="stock-search-form">
                     <div class="field">
-                        <label for="stock-symbol-input" class="label">Enter Stock Symbol</label>
                         <div class="control">
-                            <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="AAPL">
+                            <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
                         </div>
                     </div>
                     <button type="submit" id="form-submit" class="button is-link">Search</button>
@@ -30,8 +29,8 @@
             </section>
             <section id="financial-news" class="cell is-col-span-4"></section>
             <section id="crypto-commodity-values" class="cell is-col-start-6">
-                <div id="crypto-values" class="card mr-2"></div>
-                <div id="commodity-values" class="card mr-2"></div>
+                <div id="crypto-values" class="card mr-4 mb-6"></div>
+                <div id="commodity-values" class="card mr-4"></div>
             </section>
         </div>
     </main>
@@ -47,8 +46,11 @@
     <div id="my-modal" class="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
-            <h3>Welcome to TickerTrax</h3>
-            <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a no frills approach to financial data.</p>
+            <div class="box">
+                <h3>Welcome to TickerTrax</h3>
+                <br>
+                <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a no frills approach to financial data.</p>
+            </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>

@@ -9,16 +9,14 @@
 }
 
 .theme-light {
-    background-color: skyblue;
+    background-color: #CAE4BCFF;
 }
 
 body {
-    width: 100%;
-    height: 100vh;
     margin: 0;
     padding: 0;
     font-family: Helvetica, Arial, sans-serif;
-    overflow-y: scroll;
+    overflow: hidden;
 }
 
 .marquee {
@@ -33,15 +31,17 @@ body {
 }
 
 .price-change {
-    color: darkgreen;
+    color: green;
 }
 
 .negative {
-    color: maroon;
+    color: red;
 }
 
-#stock-ticker {
-    color: white;
+#news-feed {
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
 }
 
 .stock-card {
@@ -74,8 +74,13 @@ footer {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow */
 }
 
+.message-body {
+    background-color: #ffffff;
+}
+
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
 }
 
 .card-header {
@@ -84,6 +89,10 @@ footer {
 
 .card-header-title {
     color: white;
+}
+
+.stock-card .card-header {
+    background: linear-gradient(90deg, #4CAF50, #97e660);
 }
 
 .is-link {
@@ -98,8 +107,4 @@ footer {
 .is-link:hover {
     background: linear-gradient(90deg, #45a049, #2c764a);
     cursor: pointer; 
-}
-
-.label {
-    color: white;
 }
