@@ -1,30 +1,5 @@
-const FINNHUB_API_KEY = "coc8hu9r01qj8q79pm00coc8hu9r01qj8q79pm0g";
-const FMP_API_KEY = "ta4F40KXBNiO37e4v1FN7Wj9NDUsY807";
-
-const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "GOOG", "META", "NFLX"];
-
+const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
 const stockTickerEl = $("#stock-ticker");
-stockTickerEl.on("animationstart", displayStockTicker);
-
-const stockSearchFormEl = $("#stock-search-form");
-stockSearchFormEl.on("submit", handleForm);
-
-const newsEl = $("#financial-news");
-
-async function handleForm(event) {
-    event.preventDefault();
-
-    const searchInput = $("#stock-symbol-input").val().trim().toUpperCase();
-    if (searchInput !== "") {
-        let data = await getStockInfo(searchInput);
-
-        const cardEl = createStockCard(searchInput, data);
-
-        newsEl.prepend(cardEl);
-
-        stockSearchFormEl.trigger("reset");
-    }
-}
 
 async function displayStockTicker() {
     let stockData = [];
@@ -72,6 +47,102 @@ async function displayStockTicker() {
     }
 }
 
+async function displayStockNews(stockSymbol = null) {
+    const stockNews = await getStockNews(stockSymbol);
+    const financialNews = $("#financial-news");
+    const newsFeed = $("<ul></ul>");
+    newsFeed.prop("id", "news-feed");
+
+    for (const news of stockNews) {
+        const li = $("<li></li>");
+        li.prop("class", "mb-6");
+
+        const article = $("<article></article>");
+        article.prop("class", "message is-success");
+
+        const messageHeader = $("<div></div>");
+        messageHeader.prop("class", "message-header");
+
+        const h3 = $("<h3></h3>");
+        h3.text(news.headline);
+
+        messageHeader.append(h3);
+
+        const messageBody = $("<div></div>");
+        messageBody.prop("class", "message-body");
+
+        const p = $("<p></p>");
+        p.text(news.summary + "...");
+
+        const link = $("<a></a>");
+        link.prop("href", news.url);
+        link.prop("target", "_blank");
+        link.text("[Read More]");
+
+        p.append(link);
+        messageBody.append(p);
+
+        article.append(messageHeader);
+        article.append(messageBody);
+
+        li.append(article);
+        newsFeed.append(li);
+    }
+
+    financialNews.append(newsFeed);
+}
+
+async function displayMarketIndexValues() {
+    const marketData = await getMarketIndexInfo();
+    const marketValues = $("#market-values");
+    const card = $("<div></div>");
+    card.prop("class", "card");
+
+    const cardContent = $("<div></div>");
+    cardContent.prop("class", "card-content");
+
+    const ul = $("<ul></ul>");
+    ul.prop("class", "is-flex");
+
+    for (const data of marketData) {
+        const li = $("<li></li>");
+        li.prop("class", "mr-5");
+
+        const outerDiv = $("<div></div>");
+        outerDiv.prop("class", "is-flex");
+
+        const innerDiv = $("<div></div>");
+        innerDiv.prop("class", "is-justify-content-center");
+
+        const h5 = $("<h5></h5>");
+        h5.prop("class", "mr-2");
+        h5.text(data.name);
+
+        const price = $("<h6></h6>");
+        price.prop("class", "mr-2");
+        price.text(data.price);
+
+        const priceChange = $("<h6></h6>");
+        priceChange.prop("class", "price-change");
+        priceChange.text(data.change);
+
+        innerDiv.append(h5);
+        innerDiv.append(price);
+        innerDiv.append(priceChange);
+        outerDiv.append(innerDiv);
+        li.append(outerDiv);
+        ul.append(li);
+    }
+
+    cardContent.append(ul);
+    card.append(cardContent);
+    marketValues.append(card);
+}
+
+stockTickerEl.on("transitionend animationend", async function () {
+    await displayStockTicker();
+})
+
 function getStockInfo(stockSymbol) {
     return fetch(`https://finnhub.io/api/v1/quote?symbol=${stockSymbol}&token=${FINNHUB_API_KEY}`)
         .then(response => response.json())
@@ -88,4 +159,10 @@ $(document).ready(function() {
     localStorage.setItem("display-modal", JSON.stringify(false)); 
   }
   
+  const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
+
+  await displayStockTicker();
+  await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
+  //await displayMarketIndexValues();
+  //await getCommoditiesInfo();  
 });
