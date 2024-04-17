@@ -61,7 +61,7 @@ function createStockCardHeader(stockSymbol, stockData) {
 
     const h4 = $("<h4></h4>");
     h4.prop("class", "mr-3 bold");
-    h4.text(stockData.c);
+    h4.text(formatter.format(stockData.c));
 
     const priceChange = $("<h6></h6>");
     priceChange.prop("class", "mr-3 price-change bold");
@@ -70,17 +70,17 @@ function createStockCardHeader(stockSymbol, stockData) {
     percentChange.prop("class", "price-change bold");
 
     if (stockData.d > 0) {
-        priceChange.text("+" + stockData.d);
-        percentChange.text("+" + stockData.dp + "%");
+        priceChange.text("+" + formatter.format(stockData.d));
+        percentChange.text("+" + formatter.format(stockData.dp) + "%");
     } else if (stockData.d < 0) {
         priceChange.addClass("negative");
-        priceChange.text(stockData.d);
+        priceChange.text(formatter.format(stockData.d));
 
         percentChange.addClass("negative");
-        percentChange.text(stockData.dp + "%");
+        percentChange.text(formatter.format(stockData.dp) + "%");
     } else {
-        priceChange.text(stockData.d);
-        percentChange.text(stockData.dp + "%");
+        priceChange.text(formatter.format(stockData.d));
+        percentChange.text(formatter.format(stockData.dp) + "%");
     }
 
     cardHeaderTitleDiv.append(h3);
@@ -97,53 +97,53 @@ function createStockCardContent(stockData) {
     cardContentDiv.prop("class", "card-content is-flex is-justify-content-center is-align-items-center");
 
     const openDiv = $("<div></div>");
-    openDiv.prop("class", "is-flex-direction-column mr-5");
+    openDiv.prop("class", "is-flex-direction-column mr-6");
 
     const openP1 = $("<p></p>");
     openP1.prop("class", "bold");
     openP1.text("Open: ");
 
     const openValueP1 = $("<p></p>");
-    openValueP1.text(stockData.o);
+    openValueP1.text(formatter.format(stockData.o));
 
     openDiv.append(openP1);
     openDiv.append(openValueP1);
 
     const highDiv = $("<div></div>");
-    highDiv.prop("class", "is-flex-direction-column mr-5");
+    highDiv.prop("class", "is-flex-direction-column mr-6");
 
     const highP1 = $("<p></p>");
     highP1.prop("class", "bold");
     highP1.text("High: ");
 
     const highValueP1 = $("<p></p>");
-    highValueP1.text(stockData.h);
+    highValueP1.text(formatter.format(stockData.h));
 
     highDiv.append(highP1);
     highDiv.append(highValueP1);
 
     const lowDiv = $("<div></div>");
-    lowDiv.prop("class", "is-flex-direction-column mr-5");
+    lowDiv.prop("class", "is-flex-direction-column mr-6");
 
     const lowP1 = $("<p></p>");
     lowP1.prop("class", "bold");
     lowP1.text("Low: ");
 
     const lowValueP1 = $("<p></p>");
-    lowValueP1.text(stockData.l);
+    lowValueP1.text(formatter.format(stockData.l));
 
     lowDiv.append(lowP1);
     lowDiv.append(lowValueP1);
 
     const previousCloseDiv = $("<div></div>");
-    previousCloseDiv.prop("class", "is-flex-direction-column mr-5");
+    previousCloseDiv.prop("class", "is-flex-direction-column");
 
     const previousCloseP1 = $("<p></p>");
     previousCloseP1.prop("class", "bold");
     previousCloseP1.text("Previous Close: ");
 
     const previousCloseValueP1 = $("<p></p>");
-    previousCloseValueP1.text(stockData.pc);
+    previousCloseValueP1.text(formatter.format(stockData.pc));
 
     previousCloseDiv.append(previousCloseP1);
     previousCloseDiv.append(previousCloseValueP1);
@@ -176,7 +176,12 @@ function createStockCardFooter() {
 function displayPreviousSearchButtons() {
     const searchHistory = $("#search-history");
     searchHistory.empty();
-    const previousSearches = JSON.parse(localStorage.getItem("previous-searches")).sort();
+
+    let previousSearches = localStorage.getItem("previous-searches");
+
+    if (previousSearches === null) previousSearches = [];
+    else previousSearches = JSON.parse(previousSearches).sort();
+
     for (let symbol of previousSearches) {
         const button = $("<button></button>");
 

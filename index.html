@@ -10,14 +10,19 @@
     <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
-    <header>
+    <header id="stock-container">
         <div id="stock-ticker" class="marquee"></div>
     </header>
     <main class="fixed-grid has-6-cols mt-5">
         <div class="grid">
             <section id="stock-search" class="cell ml-2">
                 <form id="stock-search-form">
-                    <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
+                    <div class="field">
+                        <label for="stock-symbol-input" class="label">Enter Stock Symbol</label>
+                        <div class="control">
+                            <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="AAPL">
+                        </div>
+                    </div>
                     <button type="submit" id="form-submit" class="button is-link">Search</button>
                 </form>
                 <hr>
@@ -39,13 +44,13 @@
     <script src="./assets/js/api-calls.js"></script>
     <script src="./assets/js/form.js"></script>
     <script src="./assets/js/script.js"></script>
-    
     <div id="my-modal" class="modal">
+        <div class="modal-background"></div>
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Welcome to TickerTrax</h2>
-            <p>TickerTrax provides stock prices, changes, financial news and market information; no frills approach to financial data</p>
+            <h3>Welcome to TickerTrax</h3>
+            <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a no frills approach to financial data.</p>
         </div>
+        <button class="modal-close is-large" aria-label="close"></button>
     </div>
 </body>
 </html>

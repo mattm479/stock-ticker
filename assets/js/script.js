@@ -1,32 +1,14 @@
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
 const CRYPTO_SYMBOLS = ["BTC", "BCH", "BSV", "LTC", "PYPL", "SOL"];
-const COMMODITIES_SYMBOLS = [
-    {
-        symbol: "GASDESW",
-        name: "Diesel Gas"
-    },
-    {
-        symbol: "GASREGCOVW",
-        name: "Gas"
-    },
-    {
-        symbol: "DJFUELUSGULF",
-        name: "Jet Fuel"
-    },
-    {
-        symbol: "DHHNGSP",
-        name: "Natural Gas"
-    },
-    {
-        symbol: "DCOILWTICO",
-        name: "Oil"
-    },
-    {
-        symbol: "DPROPANEMBTX",
-        name: "Propane"
-    }
-];
+const COMMODITIES_SYMBOLS = [{ symbol: "GASDESW", name: "Diesel"}, { symbol: "GASREGCOVW", name: "Gas" },{ symbol: "DJFUELUSGULF", name: "Jet Fuel" },{ symbol: "DHHNGSP", name: "Natural Gas" },{ symbol: "DCOILWTICO", name: "Oil" },{ symbol: "DPROPANEMBTX", name: "Propane" }];
 const stockTickerEl = $("#stock-ticker");
+const marqueeEl = $(".marquee");
+const formatter = Intl.NumberFormat("en-us", {
+    style: "decimal",
+    useGrouping: false,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 4
+});
 
 async function displayStockTicker() {
     let stockData = [];
@@ -50,12 +32,12 @@ async function displayStockTicker() {
 
         const price = $("<p></p>");
         price.prop("class", "mr-2");
-        price.text(stock.c);
+        price.text(formatter.format(stock.c));
 
         const change = $("<p></p>");
         change.prop("class", "price-change");
 
-        const priceChange = (Math.round(stock.d * 100) / 100).toFixed(2);
+        const priceChange = formatter.format(stock.d);
         if (priceChange < 0) {
             change.prop("class", "negative");
             change.text(priceChange);
@@ -77,8 +59,10 @@ async function displayStockTicker() {
 async function displayStockNews(stockSymbol = null) {
     const stockNews = await getStockNews(stockSymbol);
     const financialNews = $("#financial-news");
-    const newsFeed = $("<ul></ul>");
+    const newsFeed = $("<div></div>");
     newsFeed.prop("id", "news-feed");
+
+    const ul = $("<ul></ul>");
 
     for (const news of stockNews) {
         const li = $("<li></li>");
@@ -113,9 +97,10 @@ async function displayStockNews(stockSymbol = null) {
         article.append(messageBody);
 
         li.append(article);
-        newsFeed.append(li);
+        ul.append(li);
     }
 
+    newsFeed.append(ul);
     financialNews.append(newsFeed);
 }
 
@@ -149,12 +134,12 @@ async function displayCryptoInfo() {
         h5.text(symbol);
 
         const price = $("<h6></h6>");
-        price.text((Math.round(data.c * 100) / 100).toFixed(3));
+        price.text(formatter.format(data.c));
 
         const change = $("<h6></h6>");
         change.prop("class", "price-change");
 
-        const priceChange = (Math.round(data.d * 100) / 100).toFixed(2);
+        const priceChange = formatter.format(data.d * 100);
         if (priceChange < 0) {
             change.prop("class", "negative");
             change.text(priceChange);
@@ -205,7 +190,7 @@ async function displayCommoditiesInfo() {
         h5.text(object[0].name);
 
         const h6 = $("<h6></h6>");
-        h6.text((Math.round(commodity.value * 100) / 100).toFixed(3));
+        h6.text(formatter.format(commodity.value));
 
         div.append(h5);
         div.append(h6);
@@ -216,15 +201,24 @@ async function displayCommoditiesInfo() {
     cardDiv.append(contentDiv);
 }
 
-stockTickerEl.on("transitionend animationend", async function () {
-    await displayStockTicker();
+stockTickerEl.on("mouseover", function () {
+    marqueeEl[0].style.animationPlayState = "paused";
 })
+
+stockTickerEl.on("mouseout", function () {
+    marqueeEl[0].style.animationPlayState = "running";
+});
+
+marqueeEl.on("animationiteration", async function () {
+    marqueeEl[0].empty();
+    await displayStockTicker();
+});
 
 $(document).ready(async function() {
   if (JSON.parse(localStorage.getItem("display-modal")) !== false) {
     const modalEl = $("#my-modal");
     modalEl.addClass("is-active");
-    modalEl.on("click", function(event){
+    modalEl.on("click", function(){
       modalEl.removeClass("is-active");
     });
 
