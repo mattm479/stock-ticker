@@ -27,9 +27,8 @@ function getMarketIndexInfo() {
         .catch(error => console.error(error));
 }
 
-function getCommoditiesInfo() {
-    return fetch(`https://api.iex.cloud/v1/data/core/energy?token=${IEX_API_KEY}`)
+function getCommoditiesInfo(commodities) {
+    return fetch(`https://api.iex.cloud/v1/data/core/energy/${commodities.map(commodity => commodity.symbol).toString()}?token=${IEX_API_KEY}`)
         .then(response => response.json())
-        .then(data => console.log(data))
         .catch(error => console.error(error));
 }
