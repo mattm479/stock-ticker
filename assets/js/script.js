@@ -26,7 +26,10 @@ async function displayStockTicker() {
         stockData.push(data);
     }
 
+    stockTickerEl.empty();
+
     const ul = $("<ul></ul>");
+    ul.prop("id", "stock-list");
     ul.prop("class", "is-flex mt-4");
 
     for (const stock of stockData) {
@@ -237,7 +240,6 @@ stockTickerEl.on("mouseout", function () {
  * Event Listener to clear the previous ticker data then refresh with updated values before running the animation again
  */
 marqueeEl.on("animationiteration", async function () {
-    marqueeEl[0].empty();
     await displayStockTicker();
 });
 
