@@ -3,14 +3,14 @@ const CRYPTO_SYMBOLS = ["BTC", "BCH", "BSV", "LTC", "PYPL", "SOL"];
 const COMMODITIES_SYMBOLS = [{symbol: "GASDESW", name: "Diesel"}, {
     symbol: "GASREGCOVW",
     name: "Gas"
-}, {symbol: "DJFUELUSGULF", name: "Jet Fuel"}, {symbol: "DHHNGSP", name: "Natural Gas"}, {
+}, {symbol: "DJFUELUSGULF", name: "Jet Fuel"}, {symbol: "DHHNGSP", name: "Nat.  Gas"}, {
     symbol: "DCOILWTICO",
     name: "Oil"
 }, {symbol: "DPROPANEMBTX", name: "Propane"}];
 const stockTickerEl = $("#stock-ticker");
 const marqueeEl = $(".marquee");
 const formatter = Intl.NumberFormat("en-us", {
-    style: "decimal", useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: 4
+    style: "decimal", useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: 2
 });
 
 /**
@@ -137,12 +137,12 @@ async function displayCryptoInfo() {
     cardDiv.append(headerDiv);
 
     const contentDiv = $("<div></div>");
-    contentDiv.prop("class", "card-content columns is-multiline");
+    contentDiv.prop("class", "card-content columns is-multiline is-mobile");
 
     for (const symbol of CRYPTO_SYMBOLS) {
         const data = await getStockInfo(symbol);
         const div = $("<div></div>");
-        div.prop("class", "column");
+        div.prop("class", "column is-one-third-mobile is-one-third-desktop");
 
         const h5 = $("<h5></h5>");
         h5.prop("class", "bold");
@@ -196,11 +196,11 @@ async function displayCommoditiesInfo() {
     cardDiv.append(headerDiv);
 
     const contentDiv = $("<div></div>");
-    contentDiv.prop("class", "card-content columns is-multiline");
+    contentDiv.prop("class", "card-content columns is-multiline is-mobile");
 
     for (const commodity of commoditiesData) {
         const div = $("<div></div>");
-        div.prop("class", "column");
+        div.prop("class", "column is-one-third-mobile is-one-third-desktop");
 
         const object = COMMODITIES_SYMBOLS.filter(obj => obj.symbol === commodity.key);
         const h5 = $("<h5></h5>");
