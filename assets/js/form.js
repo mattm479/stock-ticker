@@ -116,10 +116,10 @@ function createStockCardHeader(stockSymbol, stockData) {
  */
 function createStockCardContent(stockData) {
     const cardContentDiv = $("<div></div>");
-    cardContentDiv.prop("class", "card-content is-flex is-justify-content-center is-align-items-center");
+    cardContentDiv.prop("class", "card-content columns is-multiline is-mobile");
 
     const openDiv = $("<div></div>");
-    openDiv.prop("class", "is-flex-direction-column mr-6");
+    openDiv.prop("class", "column is-half-mobile");
 
     const openP1 = $("<p></p>");
     openP1.prop("class", "bold");
@@ -132,7 +132,7 @@ function createStockCardContent(stockData) {
     openDiv.append(openValueP1);
 
     const highDiv = $("<div></div>");
-    highDiv.prop("class", "is-flex-direction-column mr-6");
+    highDiv.prop("class", "column is-half-mobile");
 
     const highP1 = $("<p></p>");
     highP1.prop("class", "bold");
@@ -145,7 +145,7 @@ function createStockCardContent(stockData) {
     highDiv.append(highValueP1);
 
     const lowDiv = $("<div></div>");
-    lowDiv.prop("class", "is-flex-direction-column mr-6");
+    lowDiv.prop("class", "column is-half-mobile");
 
     const lowP1 = $("<p></p>");
     lowP1.prop("class", "bold");
@@ -158,7 +158,7 @@ function createStockCardContent(stockData) {
     lowDiv.append(lowValueP1);
 
     const previousCloseDiv = $("<div></div>");
-    previousCloseDiv.prop("class", "is-flex-direction-column");
+    previousCloseDiv.prop("class", "column is-half-mobile");
 
     const previousCloseP1 = $("<p></p>");
     previousCloseP1.prop("class", "bold");

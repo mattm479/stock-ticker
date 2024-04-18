@@ -15,9 +15,9 @@
 <header id="stock-container">
     <div class="marquee" id="stock-ticker"></div>
 </header>
-<main class="fixed-grid has-6-cols mt-5">
-    <div class="grid">
-        <section class="cell ml-2" id="stock-search">
+<main class="mt-5">
+    <div class="columns is-desktop">
+        <section class="column" id="stock-search">
             <form id="stock-search-form">
                 <div class="field">
                     <div class="control">
@@ -30,15 +30,17 @@
             <hr>
             <div id="search-history"></div>
         </section>
-        <section class="cell is-col-span-4" id="financial-news"></section>
-        <section class="cell is-col-start-6" id="crypto-commodity-values">
-            <div class="card mr-4 mb-6" id="crypto-values"></div>
-            <div class="card mr-4" id="commodity-values"></div>
+        <section class="column is-8-desktop is-12-mobile" id="financial-news"></section>
+        <section class="column" id="crypto-commodity-values">
+            <div class="card mb-6" id="crypto-values"></div>
+            <div class="card mb-6" id="commodity-values"></div>
         </section>
     </div>
 </main>
-<footer class="is-flex is-justify-content-center">
-    <p>Made with <span class="heart">&hearts;</span></p>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Made with <span class="heart">&hearts;</span></p>
+    </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
@@ -49,11 +51,16 @@
 <div class="modal" id="my-modal">
     <div class="modal-background"></div>
     <div class="modal-content">
-        <div class="box">
-            <h3>Welcome to TickerTrax</h3>
-            <br>
-            <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a
-                no frills approach to financial data.</p>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-title">
+                    <h3>Welcome to TickerTrax</h3>
+                </div>
+            </div>
+            <div class="card-content">
+                <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a
+                    no frills approach to financial data.</p>
+            </div>
         </div>
     </div>
     <button aria-label="close" class="modal-close is-large"></button>
