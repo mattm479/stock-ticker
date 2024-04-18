@@ -1,15 +1,22 @@
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
 const CRYPTO_SYMBOLS = ["BTC", "BCH", "BSV", "LTC", "PYPL", "SOL"];
-const COMMODITIES_SYMBOLS = [{ symbol: "GASDESW", name: "Diesel"}, { symbol: "GASREGCOVW", name: "Gas" },{ symbol: "DJFUELUSGULF", name: "Jet Fuel" },{ symbol: "DHHNGSP", name: "Natural Gas" },{ symbol: "DCOILWTICO", name: "Oil" },{ symbol: "DPROPANEMBTX", name: "Propane" }];
+const COMMODITIES_SYMBOLS = [{symbol: "GASDESW", name: "Diesel"}, {
+    symbol: "GASREGCOVW",
+    name: "Gas"
+}, {symbol: "DJFUELUSGULF", name: "Jet Fuel"}, {symbol: "DHHNGSP", name: "Natural Gas"}, {
+    symbol: "DCOILWTICO",
+    name: "Oil"
+}, {symbol: "DPROPANEMBTX", name: "Propane"}];
 const stockTickerEl = $("#stock-ticker");
 const marqueeEl = $(".marquee");
 const formatter = Intl.NumberFormat("en-us", {
-    style: "decimal",
-    useGrouping: false,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 4
+    style: "decimal", useGrouping: false, minimumFractionDigits: 2, maximumFractionDigits: 4
 });
 
+/**
+ * Function to display the stock ticker on the page. It retrieves the data via API call and dynamically creates the HTML
+ * to be displayed.
+ */
 async function displayStockTicker() {
     let stockData = [];
 
@@ -56,6 +63,11 @@ async function displayStockTicker() {
     }
 }
 
+/**
+ * Function to display the news feed. If you pass a symbol, the news feed will be related to that symbol otherwise
+ * the default is to pick a symbol at random from the list of ticker symbols.
+ * @param stockSymbol
+ */
 async function displayStockNews(stockSymbol = null) {
     const stockNews = await getStockNews(stockSymbol);
     const financialNews = $("#financial-news");
@@ -104,6 +116,9 @@ async function displayStockNews(stockSymbol = null) {
     financialNews.append(newsFeed);
 }
 
+/**
+ * Function to fetch and display info about crypto stocks. The HTML is dynamically generated and appended to the placeholder div.
+ */
 async function displayCryptoInfo() {
     const cardDiv = $("#crypto-values");
 
@@ -159,6 +174,9 @@ async function displayCryptoInfo() {
     cardDiv.append(contentDiv);
 }
 
+/**
+ * Function to fetch and display info about commodities. The HTML is dynamically generated and appended to the placeholder div.
+ */
 async function displayCommoditiesInfo() {
     const commoditiesData = await getCommoditiesInfo(COMMODITIES_SYMBOLS);
     const cardDiv = $("#commodity-values");
@@ -201,36 +219,48 @@ async function displayCommoditiesInfo() {
     cardDiv.append(contentDiv);
 }
 
+/**
+ * Event Listener to pause the stock ticker when the mouse is hovering over it.
+ */
 stockTickerEl.on("mouseover", function () {
     marqueeEl[0].style.animationPlayState = "paused";
 })
 
+/**
+ * Event Listener to start running the ticker once the mouse is no longer hovering over it.
+ */
 stockTickerEl.on("mouseout", function () {
     marqueeEl[0].style.animationPlayState = "running";
 });
 
+/**
+ * Event Listener to clear the previous ticker data then refresh with updated values before running the animation again
+ */
 marqueeEl.on("animationiteration", async function () {
     marqueeEl[0].empty();
     await displayStockTicker();
 });
 
-$(document).ready(async function() {
-  if (JSON.parse(localStorage.getItem("display-modal")) !== false) {
-    const modalEl = $("#my-modal");
-    modalEl.addClass("is-active");
-    modalEl.on("click", function(){
-      modalEl.removeClass("is-active");
-    });
+$(document).ready(async function () {
+    /**
+     * Check localStorage to see if we need to display the welcome modal for the user
+     */
+    if (JSON.parse(localStorage.getItem("display-modal")) !== false) {
+        const modalEl = $("#my-modal");
+        modalEl.addClass("is-active");
+        modalEl.on("click", function () {
+            modalEl.removeClass("is-active");
+        });
 
-    localStorage.setItem("display-modal", JSON.stringify(false)); 
-  }
-  
-  const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
+        localStorage.setItem("display-modal", JSON.stringify(false));
+    }
 
-  displayPreviousSearchButtons();
+    displayPreviousSearchButtons();
 
-  await displayStockTicker();
-  await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
-  await displayCryptoInfo();
-  await displayCommoditiesInfo();
+    await displayStockTicker();
+
+    const randomSymbol = Math.floor(Math.random() * STOCK_TICKER_SYMBOLS.length);
+    await displayStockNews(STOCK_TICKER_SYMBOLS[randomSymbol].toLowerCase());
+    await displayCryptoInfo();
+    await displayCommoditiesInfo();
 });

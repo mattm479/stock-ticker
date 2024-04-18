@@ -1,59 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" class="theme-light">
+<html class="theme-light" lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>TickerTrax</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/themes/base/theme.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/themes/base/theme.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" rel="stylesheet">
+    <link href="./assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <header id="stock-container">
-        <div id="stock-ticker" class="marquee"></div>
-    </header>
-    <main class="fixed-grid has-6-cols mt-5">
-        <div class="grid">
-            <section id="stock-search" class="cell ml-2">
-                <form id="stock-search-form">
-                    <div class="field">
-                        <div class="control">
-                            <input type="text" id="stock-symbol-input" class="input mb-2" name="stock-symbol-input" placeholder="Enter Stock Symbol">
-                        </div>
+<header id="stock-container">
+    <div class="marquee" id="stock-ticker"></div>
+</header>
+<main class="fixed-grid has-6-cols mt-5">
+    <div class="grid">
+        <section class="cell ml-2" id="stock-search">
+            <form id="stock-search-form">
+                <div class="field">
+                    <div class="control">
+                        <input class="input mb-2" id="stock-symbol-input" name="stock-symbol-input" placeholder="Enter Stock Symbol"
+                               type="text">
                     </div>
-                    <button type="submit" id="form-submit" class="button is-link">Search</button>
-                </form>
-                <hr>
-                <div id="search-history"></div>
-            </section>
-            <section id="financial-news" class="cell is-col-span-4"></section>
-            <section id="crypto-commodity-values" class="cell is-col-start-6">
-                <div id="crypto-values" class="card mr-4 mb-6"></div>
-                <div id="commodity-values" class="card mr-4"></div>
-            </section>
-        </div>
-    </main>
-    <footer class="is-flex is-justify-content-center">
-        <p>Made with <span class="heart">&hearts;</span></p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="./assets/js/api-calls.js"></script>
-    <script src="./assets/js/form.js"></script>
-    <script src="./assets/js/script.js"></script>
-    <div id="my-modal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-            <div class="box">
-                <h3>Welcome to TickerTrax</h3>
-                <br>
-                <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a no frills approach to financial data.</p>
-            </div>
-        </div>
-        <button class="modal-close is-large" aria-label="close"></button>
+                </div>
+                <button class="button is-link" id="form-submit" type="submit">Search</button>
+            </form>
+            <hr>
+            <div id="search-history"></div>
+        </section>
+        <section class="cell is-col-span-4" id="financial-news"></section>
+        <section class="cell is-col-start-6" id="crypto-commodity-values">
+            <div class="card mr-4 mb-6" id="crypto-values"></div>
+            <div class="card mr-4" id="commodity-values"></div>
+        </section>
     </div>
+</main>
+<footer class="is-flex is-justify-content-center">
+    <p>Made with <span class="heart">&hearts;</span></p>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="./assets/js/api-calls.js"></script>
+<script src="./assets/js/form.js"></script>
+<script src="./assets/js/script.js"></script>
+<div class="modal" id="my-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h3>Welcome to TickerTrax</h3>
+            <br>
+            <p>TickerTrax provides stock prices, changes, financial news, crypto and commodities information. We offer a
+                no frills approach to financial data.</p>
+        </div>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+</div>
 </body>
 </html>
 

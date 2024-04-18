@@ -2,8 +2,17 @@ const stockSearchFormEl = $("#stock-search-form");
 const searchInputEl = $("#stock-symbol-input");
 const newsEl = $("#financial-news");
 
+/**
+ * Add event listener to handle form submission
+ */
 stockSearchFormEl.on("submit", handleForm);
 
+/**
+ * Function to display stock info and news related to the stock symbol submitted through the form.
+ * Also, add the stock symbol to localStorage if it doesn't already exist and regenerate the previous search buttons
+ * to include the newly searched symbol.
+ * @param event
+ */
 async function handleForm(event) {
     event.preventDefault();
 
@@ -23,8 +32,7 @@ async function handleForm(event) {
 
         const cardEl = createStockCard(searchInput, data);
 
-        $("#financial-news").empty();
-
+        newsEl.empty();
         newsEl.prepend(cardEl);
 
         await displayStockNews(searchInput);
@@ -33,6 +41,11 @@ async function handleForm(event) {
     }
 }
 
+/**
+ * Function to create stock card to display stock info for symbol submitted through the form.
+ * @param stockSymbol
+ * @param stockData
+ */
 function createStockCard(stockSymbol, stockData) {
     const cardDiv = $("<div></div>");
     cardDiv.prop("class", "card stock-card mb-6");
@@ -48,6 +61,11 @@ function createStockCard(stockSymbol, stockData) {
     return cardDiv;
 }
 
+/**
+ * Function to create the card header which includes the stock symbol, current price, price change and percent change.
+ * @param stockSymbol
+ * @param stockData
+ */
 function createStockCardHeader(stockSymbol, stockData) {
     const cardHeaderDiv = $("<div></div>");
     cardHeaderDiv.prop("class", "card-header");
@@ -92,6 +110,10 @@ function createStockCardHeader(stockSymbol, stockData) {
     return cardHeaderDiv;
 }
 
+/**
+ * Function to add the open, high, low, and previous close values for the stock to the card.
+ * @param stockData
+ */
 function createStockCardContent(stockData) {
     const cardContentDiv = $("<div></div>");
     cardContentDiv.prop("class", "card-content is-flex is-justify-content-center is-align-items-center");
@@ -156,6 +178,9 @@ function createStockCardContent(stockData) {
     return cardContentDiv;
 }
 
+/**
+ * Function to add the date of the stock quote to the card.
+ */
 function createStockCardFooter() {
     const footerDiv = $("<div></div>");
     footerDiv.prop("class", "card-footer");
@@ -173,14 +198,16 @@ function createStockCardFooter() {
     return footerDiv;
 }
 
+/**
+ * Function to retrieve the array of previously searched stock symbols and create buttons to quick search the symbols in the future.
+ */
 function displayPreviousSearchButtons() {
     const searchHistory = $("#search-history");
     searchHistory.empty();
 
     let previousSearches = localStorage.getItem("previous-searches");
 
-    if (previousSearches === null) previousSearches = [];
-    else previousSearches = JSON.parse(previousSearches).sort();
+    if (previousSearches === null) previousSearches = []; else previousSearches = JSON.parse(previousSearches).sort();
 
     for (let symbol of previousSearches) {
         const button = $("<button></button>");
