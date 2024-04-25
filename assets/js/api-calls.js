@@ -2,7 +2,7 @@
  * API Keys for calls - can't wait until we store these outside of the code.
  */
 const FINNHUB_API_KEY = "coc8hu9r01qj8q79pm00coc8hu9r01qj8q79pm0g";
-const IEX_API_KEY = "pk_246b96a914264fde9aae4b20f851c261";
+const IEX_API_KEY = "pk_7907b557e46e45bfab6c65968ecd4be5";
 
 /**
  * Retrieve stock data for a specific symbol.
