@@ -1,12 +1,12 @@
 const STOCK_TICKER_SYMBOLS = ["AAPL", "AMZN", "DIS", "GOOG", "MSFT", "META", "NFLX", "NVDA", "SMCI", "TSLA", "TSM"];
 const CRYPTO_SYMBOLS = ["BTC", "BCH", "BSV", "LTC", "PYPL", "SOL"];
-const COMMODITIES_SYMBOLS = [{symbol: "GASDESW", name: "Diesel"}, {
-    symbol: "GASREGCOVW",
-    name: "Gas"
-}, {symbol: "DJFUELUSGULF", name: "Jet Fuel"}, {symbol: "DHHNGSP", name: "Nat.  Gas"}, {
-    symbol: "DCOILWTICO",
-    name: "Oil"
-}, {symbol: "DPROPANEMBTX", name: "Propane"}];
+const COMMODITIES_SYMBOLS = [
+    {symbol: "COPPER", name: "Global Price of Copper", displayName: "Copper"},
+    {symbol: "ALUMINUM", name: "Global Price of Aluminum", displayName: "Aluminum"},
+    {symbol: "COTTON", name: "Global Price of Cotton", displayName: "Cotton"},
+    {symbol: "NATURAL_GAS", name: "Henry Hub Natural Gas Spot Price", displayName: "Nat. Gas"},
+    {symbol: "WTI", name: "Crude Oil Prices WTI", displayName: "Oil"},
+    {symbol: "COFFEE", name: "Global Price of Coffee", displayName: "Coffee"}];
 const stockTickerEl = $("#stock-ticker");
 const marqueeEl = $(".marquee");
 const formatter = Intl.NumberFormat("en-us", {
@@ -79,7 +79,7 @@ async function displayStockNews(stockSymbol = null) {
 
     const ul = $("<ul></ul>");
 
-    for (const news of stockNews) {
+    for (const news of stockNews.feed) {
         const li = $("<li></li>");
         li.prop("class", "mb-6");
 
@@ -90,7 +90,7 @@ async function displayStockNews(stockSymbol = null) {
         messageHeader.prop("class", "message-header");
 
         const h3 = $("<h3></h3>");
-        h3.text(news.headline);
+        h3.text(news.title);
 
         messageHeader.append(h3);
 
@@ -181,7 +181,11 @@ async function displayCryptoInfo() {
  * Function to fetch and display info about commodities. The HTML is dynamically generated and appended to the placeholder div.
  */
 async function displayCommoditiesInfo() {
-    const commoditiesData = await getCommoditiesInfo(COMMODITIES_SYMBOLS);
+    const commoditiesData = [];
+    for (const commodity of COMMODITIES_SYMBOLS) {
+        commoditiesData.push(await getCommoditiesInfo(commodity.symbol));
+    }
+
     const cardDiv = $("#commodity-values");
 
     const headerDiv = $("<div></div>");
@@ -205,13 +209,13 @@ async function displayCommoditiesInfo() {
         const div = $("<div></div>");
         div.prop("class", "column is-one-third-mobile is-one-third-desktop");
 
-        const object = COMMODITIES_SYMBOLS.filter(obj => obj.symbol === commodity.key);
+        const object = COMMODITIES_SYMBOLS.filter(obj => obj.name === commodity.name);
         const h5 = $("<h5></h5>");
         h5.prop("class", "bold");
-        h5.text(object[0].name);
+        h5.text(object[0].displayName);
 
         const h6 = $("<h6></h6>");
-        h6.text(formatter.format(commodity.value));
+        h6.text(formatter.format(commodity.data[0].value));
 
         div.append(h5);
         div.append(h6);

@@ -2,7 +2,7 @@
  * API Keys for calls - can't wait until we store these outside of the code.
  */
 const FINNHUB_API_KEY = "coc8hu9r01qj8q79pm00coc8hu9r01qj8q79pm0g";
-const IEX_API_KEY = "pk_7907b557e46e45bfab6c65968ecd4be5";
+const ALPHA_VANTAGE_API_KEY = "WKJPLDP0ARARLE1V";
 
 /**
  * Retrieve stock data for a specific symbol.
@@ -20,13 +20,13 @@ function getStockInfo(stockSymbol) {
  */
 function getStockNews(stockSymbol = null) {
     const limit = 10;
-    let url = `https://api.iex.cloud/v1/data/core/news`;
+    let url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT`;
 
     if (stockSymbol !== null) {
-        url += `/${stockSymbol}`;
+        url += `&tickers=${stockSymbol}`;
     }
 
-    url += `?limit=${limit}&token=${IEX_API_KEY}`;
+    url += `&limit=${limit}&apikey=${ALPHA_VANTAGE_API_KEY}`;
 
     return fetch(url)
         .then(response => response.json())
@@ -34,11 +34,11 @@ function getStockNews(stockSymbol = null) {
 }
 
 /**
- * Retrieve commodities data - NOTE: you can make 1 call with all the commodities passed in a comma separated list.
- * @param commodities
+ * Retrieve commodities data
+ * @param commodity
  */
-function getCommoditiesInfo(commodities) {
-    return fetch(`https://api.iex.cloud/v1/data/core/energy/${commodities.map(commodity => commodity.symbol).toString()}?token=${IEX_API_KEY}`)
+function getCommoditiesInfo(commodity) {
+    return fetch(`https://www.alphavantage.co/query?function=${commodity}&apikey=${ALPHA_VANTAGE_API_KEY}`)
         .then(response => response.json())
         .catch(error => console.error(error));
 }
